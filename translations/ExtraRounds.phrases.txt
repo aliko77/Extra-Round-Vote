@@ -1,0 +1,66 @@
+"Phrases"
+{
+	"Call_round"{
+		"#format" "{1:i}"
+		"tr" "{orange}{1} {green}saniye sonra özel oylama yapılacak."
+		"en" "{green}There will be a private voting in {orange} {1} {green} seconds."
+	}
+	"RoundEndVote"{
+		"tr" "{green}Round bitiminde oylama yapılacak."
+		"en" "{green}Vote will be held at the end of the round."
+	}
+	"NextExtraRound"{
+		"#format" "{1:s}"
+		"tr" "{green}Diğer round {orange}{1} {green}oynanacak."
+		"en" "{green}The other round {orange}{1} {green}will be played."
+	}
+	"OnExtraRound"{
+		"#format" "{1:i}"
+		"tr" "{orange}{1} {green}saniye sonra özel round bitecek."
+		"en" "{green}Extra round will end in {orange}{1} {green}seconds"
+	}	
+	"OnExtraRoundEnd"{
+		"tr" "{green}Süre birazdan başlatılacak."
+		"en" "{green}Timer will start soon."
+	}	
+	"SendVote_Title"{
+		"tr" "Extra Round Oylaması"
+		"en" "Extra Round Voting"
+	}
+	"VoteResult"{
+		"#format" "{1:s}"
+		"tr" "{green}Oylamadan çıkan sonuç {orange}{1}"
+		"en" "{green}Result of voting {orange}{1}"
+	}
+	"ShortcutError"{
+		"tr" "{green}Şuan da zaten bir extra-round oynanmakta. Lütfen daha sonra deneyiniz."
+		"en" "{green}An extra-round is being played now. Please try later."		
+	}
+	"ShortcutSuccess"{
+		"#format" "{1:N},{2:s}"
+		"tr" "{green}{1}, tarafından diğer round {orange}{2} olarak ayarlandı."
+		"en" "{green}{1} arranged the other tour as {orange}{2}."
+	}	
+    "GivePlayerItemError"{
+		"#format" "{1:s}"
+		"tr" "{green}Bilinmeyen weapon class name ({orange}{1}{green})."
+		"en" "{green}Unknown weapon class name ({orange}{1}{green})."
+	}
+    "RoundIptalError"{
+		"tr" "{green}Zaten bir [Extra Round] aktif değil."
+		"en" "{green} An [Extra Round] is not already active."
+	}    
+    "RoundIptal"{
+        "#format" "{1:N}"
+		"tr" "{orange}{1} {green}Mevcut roundu iptal etti, ayarlar sıfırlandı."
+		"en" "{orange}{1} {green}Canceled current round, settings reset."
+	}     
+    "RoundInfoAtHud"{
+		"tr" "Extra Round Başladı"
+		"en" "Extra Round Starts"
+	}   
+	"RoundInfoAtHud"{
+		"tr" "{green}Round süresi bitti, süre birazdan tekrar başlatılacak."
+		"en" "Round time is over, it will be restarted soon."
+	}  	 
+}
