@@ -41,26 +41,26 @@
 		"tr" "{green}{1}, tarafından diğer round {orange}{2} olarak ayarlandı."
 		"en" "{green}{1} arranged the other tour as {orange}{2}."
 	}	
-    "GivePlayerItemError"{
+    	"GivePlayerItemError"{
 		"#format" "{1:s}"
 		"tr" "{green}Bilinmeyen weapon class name ({orange}{1}{green})."
 		"en" "{green}Unknown weapon class name ({orange}{1}{green})."
 	}
-    "RoundIptalError"{
+    	"RoundIptalError"{
 		"tr" "{green}Zaten bir [Extra Round] aktif değil."
-		"en" "{green} An [Extra Round] is not already active."
+		"en" "{green}An [Extra Round] is not already active."
 	}    
-    "RoundIptal"{
+    	"RoundIptal"{
         "#format" "{1:N}"
 		"tr" "{orange}{1} {green}Mevcut roundu iptal etti, ayarlar sıfırlandı."
 		"en" "{orange}{1} {green}Canceled current round, settings reset."
 	}     
-    "RoundInfoAtHud"{
+    	"RoundInfoAtHud"{
 		"tr" "Extra Round Başladı"
 		"en" "Extra Round Starts"
 	}   
-	"RoundInfoAtHud"{
+	"RoundTimeEnd"{
 		"tr" "{green}Round süresi bitti, süre birazdan tekrar başlatılacak."
-		"en" "Round time is over, it will be restarted soon."
+		"en" "{green}Round time is over, it will be restarted soon."
 	}  	 
 }

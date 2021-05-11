@@ -2,6 +2,7 @@ void HookEvents(){
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Pre);
 	HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Pre);
+	HookEventEx("weapon_fire", Event_WeaponFire, EventHookMode_Pre);
 }
 public Action CS_OnCSWeaponDrop(int client, int weaponindex)
 {
@@ -38,7 +39,7 @@ void Event_RoundEnd(Event event, const char[] name, bool dontBroadcast){
 void Event_RoundStart(Event event, const char[] name, bool dontBroadcast){
 	if(b_VoteResult && i_result_enumIndex != -1 && b_OnExtraRound){
 		if(!t_round_timer){
-			i_round_time = g_iRoundTime;
+			i_round_time = g_ExtraRounds[i_result_enumIndex].er_round_time;
 			t_round_timer = CreateTimer(1.0, timer_func_round, _, TIMER_REPEAT);
 		}
 		if(b_OnExtraRound){
@@ -66,8 +67,23 @@ void Event_RoundStart(Event event, const char[] name, bool dontBroadcast){
 }
 void Event_PlayerSpawn(Handle event, const char[] name, bool dontBroadcast){
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(b_OnExtraRound && client != -1){
+	if(b_OnExtraRound && i_result_enumIndex != -1 && client != -1){
 		DoRound(client);
+	}
+}
+void Event_WeaponFire(Handle event, const char[] name, bool dontBroadcast){
+	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(b_OnExtraRound && i_result_enumIndex != -1 && client != -1){
+	    int activeweapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
+	    if (!IsValidEdict(activeweapon)) return;
+	    char weaponname[64];
+	    GetEdictClassname(activeweapon, weaponname, sizeof(weaponname));
+	    if (StrContains(weaponname, "hegrenade") != -1 || StrContains(weaponname, "flashbang") != -1
+	    || StrContains(weaponname, "smokegrenade") != -1 || StrContains(weaponname, "decoy") != -1 || StrContains(weaponname, "incgrenade") != -1
+	    || StrContains(weaponname, "molotov") != -1){
+	    	GivePlayerItem(client, g_ExtraRounds[i_result_enumIndex].er_weapon);
+	  	}
+	  	else if (StrContains(weaponname, "taser") != -1)SetEntProp(activeweapon, Prop_Send, "m_iPrimaryReserveAmmoCount", 1);
 	}
 }
 public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom){

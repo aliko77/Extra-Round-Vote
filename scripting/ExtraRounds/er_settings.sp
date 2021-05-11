@@ -40,7 +40,7 @@ void SetSettings(){
 	do{
 		Kv.GetString("display_string", g_ExtraRounds[i].er_display_string, 48, "Undefined");
 		Kv.GetString("round_time", buffer, 32, "45");
-		g_ExtraRounds[i].er_round_time = (StringToInt(buffer) < 1) ? 1 :  StringToInt(buffer);
+		g_ExtraRounds[i].er_round_time = (StringToInt(buffer) < 10) ? 10 :  StringToInt(buffer);
 		Kv.GetString("weapon", g_ExtraRounds[i].er_weapon, 32, "Undefined");
 		Kv.GetString("only_hs", buffer, 32, "0");
 		g_ExtraRounds[i].er_only_hs = StringToInt(buffer);

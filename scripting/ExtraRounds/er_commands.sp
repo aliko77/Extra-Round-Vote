@@ -35,6 +35,13 @@ public Action Call_roundIptal(int client, int args){
 	}
 	return Plugin_Handled;
 }
+public Action Call_roundReload(int client, int args){
+	if (!check_status(client))return Plugin_Handled;
+	function_Sifirla();
+	SetSettings();
+	CPrintToChatAll("{darkred}%s {green}Ayarlar başarıyla tekrar yüklendi.(Success)", g_sPluginTitle);
+	return Plugin_Handled;
+}
 public void OnClientSayCommand_Post(int client, const char[] command, const char[] args){
 	if (check_status(client) && GetUserFlagBits(client) & (g_sAdminFlag | ADMFLAG_ROOT)){
 		for (int i = 0; i < i_toplam_ER; i++) {

@@ -83,6 +83,7 @@ public void OnPluginStart(){
 	m_flNextSecondaryAttack = FindSendPropInfo("CBaseCombatWeapon", "m_flNextSecondaryAttack");
 	RegConsoleCmd("sm_round", Call_round, "Extra Round hakkında bilgi verir.");
 	RegAdminCmd("sm_roundiptal", Call_roundIptal, ADMFLAG_BAN, "Mevcut roundu iptal eder ve ayarları sıfırlar");
+	RegAdminCmd("sm_roundreload", Call_roundReload, ADMFLAG_ROOT, "Extra Round ayarlarını tekrar yükler.");
 	for(int  i = 1; i <= MaxClients; i++){
 		if(IsClientInGame(i))
 		{
