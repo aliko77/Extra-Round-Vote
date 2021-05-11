@@ -71,9 +71,9 @@ void SetSettings(){
 			continue;
 		}
 		i++;
-		i_toplam_ER++;
 	} while (Kv.GotoNextKey());
 	Kv.Close();
+	i_toplam_ER = i;
 	if (i_toplam_ER == 0){
 		SetFailState("[Extra Rounds] Round bilgileri çekilemedi. Lütfen dosyayı (configs/ExtraRounds/extra_rounds.ini) kontrol edin.");
 	}if(i_toplam_ER < 6){

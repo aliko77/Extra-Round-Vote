@@ -3,7 +3,7 @@
 #define DEBUG
 
 #define PLUGIN_AUTHOR "alikoc77"
-#define PLUGIN_VERSION "1.00"
+#define PLUGIN_VERSION "1.02"
 #define mtag "[Extra Rounds]"
 
 #include <sourcemod>
@@ -84,6 +84,7 @@ public void OnPluginStart(){
 	RegConsoleCmd("sm_round", Call_round, "Extra Round hakkında bilgi verir.");
 	RegAdminCmd("sm_roundiptal", Call_roundIptal, ADMFLAG_BAN, "Mevcut roundu iptal eder ve ayarları sıfırlar");
 	RegAdminCmd("sm_roundreload", Call_roundReload, ADMFLAG_ROOT, "Extra Round ayarlarını tekrar yükler.");
+	RegAdminCmd("sm_roundlist", Call_roundList, ADMFLAG_ROOT, "Extra Roundları consola listeler");
 	for(int  i = 1; i <= MaxClients; i++){
 		if(IsClientInGame(i))
 		{

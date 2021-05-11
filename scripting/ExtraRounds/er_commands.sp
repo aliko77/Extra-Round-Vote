@@ -37,9 +37,19 @@ public Action Call_roundIptal(int client, int args){
 }
 public Action Call_roundReload(int client, int args){
 	if (!check_status(client))return Plugin_Handled;
-	function_Sifirla();
+	if(b_OnExtraRound || b_SendVote || b_VoteResult){
+		CPrintToChatAll("{darkred}%s {green}Şuan ayarları tekrar yüklemek için uygun değil.(not available now)", g_sPluginTitle);
+		return Plugin_Handled;
+	}
 	SetSettings();
 	CPrintToChatAll("{darkred}%s {green}Ayarlar başarıyla tekrar yüklendi.(Success)", g_sPluginTitle);
+	return Plugin_Handled;
+}
+public Action Call_roundList(int client, int args){
+	if (!check_status(client))return Plugin_Handled;
+	for (int i = 0; i < i_toplam_ER; i++){
+		PrintToConsole(client, "%i > %s", i, g_ExtraRounds[i].er_display_string);
+	}
 	return Plugin_Handled;
 }
 public void OnClientSayCommand_Post(int client, const char[] command, const char[] args){
