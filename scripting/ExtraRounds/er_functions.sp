@@ -175,3 +175,65 @@ stock void SetNoScope(int weapon)
 		}
 	}
 }
+char[] GetRoundInfo(int index){
+	char buf[512];
+	Format(buf, 512, "Round İsmi: %s", g_ExtraRounds[index].er_display_string);
+	if (g_ExtraRounds[index].er_round_time != 45){
+		Format(buf, 512, "%s\n"...
+		"Round Süresi: %i sn", buf, g_ExtraRounds[index].er_round_time);
+	}
+	if (!StrEqual(g_ExtraRounds[index].er_weapon, "Undefined")){
+		Format(buf, 512, "%s\n"...
+		"Round Silahı: %s", buf, g_ExtraRounds[index].er_weapon);
+	}
+	if (g_ExtraRounds[index].er_only_hs != 0){
+		Format(buf, 512, "%s\n"...
+		"Only Hs: Açık", buf);
+	}
+	if (!StrEqual(g_ExtraRounds[index].er_hud_msg, "Undefined")){
+		Format(buf, 512, "%s\n"...
+		"Hud Mesajı: Mevcut", buf);
+	}
+	if (g_ExtraRounds[index].er_knife_dmg != 0){
+		Format(buf, 512, "%s\n"...
+		"Bıçak Hasarı: Açık", buf);
+	}
+	if (g_ExtraRounds[index].er_armor != 0){
+		Format(buf, 512, "%s\n"...
+		"Zırh ve Kask: Açık", buf);
+	}
+	if (g_ExtraRounds[index].er_hp != 0){
+		Format(buf, 512, "%s\n"...
+		"Can Ayarı: %i", buf, g_ExtraRounds[index].er_hp);
+	}
+	if (!StrEqual(g_ExtraRounds[index].er_shortcut, "Undefined")){
+		Format(buf, 512, "%s\n"...
+		"Kısa Yol: %s", buf, g_ExtraRounds[index].er_shortcut);
+	}
+	if (g_ExtraRounds[index].er_no_zoom != 0){
+		Format(buf, 512, "%s\n"...
+		"No Scoper: Aktif", buf);
+	}
+	if (g_ExtraRounds[index].er_gravity != -1){
+		Format(buf, 512, "%s\n"...
+		"Gravity: %i", buf, g_ExtraRounds[index].er_gravity);
+	}
+	if (g_ExtraRounds[index].er_speed != 1){
+		Format(buf, 512, "%s\n"...
+		"Oyuncu Hızı: %0.2f", buf, g_ExtraRounds[index].er_speed);
+	}
+	if (!StrEqual(g_ExtraRounds[index].er_extraItem, "Undefined")){
+		Format(buf, 512, "%s\n"...
+		"Extra İtem: %s", buf, g_ExtraRounds[index].er_extraItem);
+	}
+	if (g_ExtraRounds[index].er_no_recoil != 0){
+		Format(buf, 512, "%s\n"...
+		"Silah Sekmeme: Aktif", buf);
+	}
+	if (!StrEqual(g_ExtraRounds[index].er_cmd, "Undefined")){
+		Format(buf, 512, "%s\n"...
+		"Server Komut: Mevcut", buf);
+	}	
+	(g_ExtraRounds[index].er_enable == 1) ? Format(buf, 512, "%s\nRound Durumu: Aktif", buf) : Format(buf, 512, "%s\nRound Durumu: Deaktif", buf);
+	return buf;
+}

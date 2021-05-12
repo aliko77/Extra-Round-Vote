@@ -47,10 +47,26 @@ public Action Call_roundReload(int client, int args){
 }
 public Action Call_roundList(int client, int args){
 	if (!check_status(client))return Plugin_Handled;
-	for (int i = 0; i < i_toplam_ER; i++){
-		PrintToConsole(client, "%i > %s", i, g_ExtraRounds[i].er_display_string);
-	}
+	RoundList(client);
 	return Plugin_Handled;
+}
+public int menu_roundlist(Menu menu, MenuAction action, int client, int item){
+	switch (action){
+		case MenuAction_Select:{
+			Menu menu2 = CreateMenu(menu_menu_roundlist);
+			SetMenuExitBackButton(menu2, true);
+			SetMenuExitButton(menu2, true);
+			SetMenuTitle(menu2, "%s\n%s", mtag);
+			AddMenuItem(menu2, "", "Geri");
+			DisplayMenu(menu2, client, MENU_TIME_FOREVER);
+		}
+		case MenuAction_End:{
+			delete menu;
+		}		
+	}
+}
+public int menu_menu_roundlist(Menu menu, MenuAction action, int client, int item){
+
 }
 public void OnClientSayCommand_Post(int client, const char[] command, const char[] args){
 	if (check_status(client) && GetUserFlagBits(client) & (g_sAdminFlag | ADMFLAG_ROOT)){

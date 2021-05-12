@@ -66,6 +66,7 @@ enum_ExtraRounds g_ExtraRounds[48];
 #include "ExtraRounds/er_functions.sp"
 #include "ExtraRounds/er_commands.sp"
 #include "ExtraRounds/er_events.sp"
+#include "ExtraRounds/er_menus.sp"
 
 public Plugin myinfo = 
 {
@@ -86,7 +87,7 @@ public void OnPluginStart(){
 	RegConsoleCmd("sm_round", Call_round, "Extra Round hakkında bilgi verir.");
 	RegAdminCmd("sm_roundiptal", Call_roundIptal, ADMFLAG_BAN, "Mevcut roundu iptal eder ve ayarları sıfırlar");
 	RegAdminCmd("sm_roundreload", Call_roundReload, ADMFLAG_ROOT, "Extra Round ayarlarını tekrar yükler.");
-	RegAdminCmd("sm_roundlist", Call_roundList, ADMFLAG_ROOT, "Extra Roundları consola listeler");
+	RegConsoleCmd("sm_roundlar", Call_roundList, "Extra Roundları listeler");
 	for(int  i = 1; i <= MaxClients; i++){
 		if(IsClientInGame(i))
 		{
