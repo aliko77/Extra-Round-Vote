@@ -43,6 +43,24 @@ void Event_RoundStart(Event event, const char[] name, bool dontBroadcast){
 			t_round_timer = CreateTimer(1.0, timer_func_round, _, TIMER_REPEAT);
 		}
 		if(b_OnExtraRound){
+			if (!StrEqual(g_ExtraRounds[i_result_enumIndex].er_cmd, "Undefined") && strlen(g_ExtraRounds[i_result_enumIndex].er_cmd) > 0){
+				char cmds[32][128];
+				ExplodeString(g_ExtraRounds[i_result_enumIndex].er_cmd, ";", cmds, 32, 128);
+				for (int i = 0; i < sizeof(cmds); i++){
+					if (strlen(cmds[i]) == 0)continue;
+					ConVar ConvarCmd;
+					ConvarCmd = FindConVar(cmds[i]);
+					if(ConvarCmd){
+						char sConvarCmd[48];
+						ConvarCmd.GetString(sConvarCmd, 48);
+						Handle trie = CreateTrie();
+						SetTrieString(trie, "convarName", cmds[i]);
+						SetTrieString(trie, "convarValue", sConvarCmd);
+						PushArrayCell(g_mapCmd, trie);
+					}
+				}
+				ServerCommand(g_ExtraRounds[i_result_enumIndex].er_cmd);
+			}
 			if (!StrEqual(g_ExtraRounds[i_result_enumIndex].er_hud_msg, "Undefined") && strlen(g_ExtraRounds[i_result_enumIndex].er_hud_msg) > 0){
 				CreateTimer(1.0, TMR_uyari, TIMER_FLAG_NO_MAPCHANGE);
 			}

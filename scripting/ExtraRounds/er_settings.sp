@@ -44,9 +44,12 @@ void SetSettings(){
 		Kv.GetString("weapon", g_ExtraRounds[i].er_weapon, 32, "Undefined");
 		Kv.GetString("only_hs", buffer, 32, "0");
 		g_ExtraRounds[i].er_only_hs = StringToInt(buffer);
-		Kv.GetString("hud_msg", g_ExtraRounds[i].er_hud_msg, 256, "Undefined");
+		Kv.GetString("hud_msg", g_ExtraRounds[i].er_hud_msg, 512, "Undefined");
 		if(g_iRound_info == 1){
-			Format(g_ExtraRounds[i].er_hud_msg, 256, "> %t <\n%s", "RoundInfoAtHud", g_ExtraRounds[i].er_display_string);
+			if (StrEqual(g_ExtraRounds[i].er_hud_msg, "Undefined"))
+				Format(g_ExtraRounds[i].er_hud_msg, 512, "> %t <\n%s", "RoundInfoAtHud", g_ExtraRounds[i].er_display_string);
+			else
+				Format(g_ExtraRounds[i].er_hud_msg, 512, "> %t <\n%s\n%s", "RoundInfoAtHud", g_ExtraRounds[i].er_display_string, g_ExtraRounds[i].er_hud_msg);
 		}
 		Kv.GetString("knife_dmg", buffer, 32, "0");
 		g_ExtraRounds[i].er_knife_dmg = StringToInt(buffer);
@@ -67,6 +70,7 @@ void SetSettings(){
 		Kv.GetString("player_speed", buffer, 32, "1");
 		g_ExtraRounds[i].er_speed = StringToFloat(buffer);
 		g_ExtraRounds[i].er_index = i;
+		Kv.GetString("cmd", g_ExtraRounds[i].er_cmd, sizeof(g_ExtraRounds[].er_cmd), "Undefined");
 		if (StrEqual(g_ExtraRounds[i].er_display_string, "Undefined") || StrEqual(g_ExtraRounds[i].er_weapon, "Undefined") || g_ExtraRounds[i].er_enable == 0){
 			continue;
 		}
@@ -91,4 +95,5 @@ public void GetCVars() {
 	g_cvPredictionConVars[6] = FindConVar("weapon_recoil_suppression_shots");
 	g_cvPredictionConVars[7] = FindConVar("weapon_recoil_variance");
 	g_cvPredictionConVars[8] = FindConVar("weapon_recoil_view_punch_extra");
+	g_mapCmd = new ArrayList();
 }

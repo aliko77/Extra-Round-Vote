@@ -19,7 +19,7 @@ enum struct enum_ExtraRounds {
 	int er_round_time;
 	char er_weapon[32];
 	int er_only_hs;
-	char er_hud_msg[256];
+	char er_hud_msg[512];
 	int er_knife_dmg;
 	int er_armor;
 	int er_hp;
@@ -31,6 +31,7 @@ enum struct enum_ExtraRounds {
 	float er_speed;
 	char er_extraItem[32];
 	int er_no_recoil;
+	char er_cmd[512];
 }
 
 char g_sPluginTitle[64],
@@ -57,6 +58,7 @@ bool b_SendVote,
 	bRound_iptal;
 
 ConVar g_cvPredictionConVars[9] = {null, ...};
+ArrayList g_mapCmd;
 
 enum_ExtraRounds g_ExtraRounds[48];
 

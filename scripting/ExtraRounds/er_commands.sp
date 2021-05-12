@@ -55,12 +55,12 @@ public Action Call_roundList(int client, int args){
 public void OnClientSayCommand_Post(int client, const char[] command, const char[] args){
 	if (check_status(client) && GetUserFlagBits(client) & (g_sAdminFlag | ADMFLAG_ROOT)){
 		for (int i = 0; i < i_toplam_ER; i++) {
-			if(b_OnExtraRound){
-				CPrintToChat(client, "{darkred}%s %t", g_sPluginTitle, "ShortcutError");
-				return;
-			}			
 			if (!StrEqual(g_ExtraRounds[i].er_shortcut, "Undefined")){
 				if (!strcmp(args, g_ExtraRounds[i].er_shortcut, false)) {
+					if(b_OnExtraRound){
+						CPrintToChat(client, "{darkred}%s %t", g_sPluginTitle, "ShortcutError");
+						return;
+					}					
 					function_Sifirla(0, 1);
 					CPrintToChatAll("{darkred}%s %t", g_sPluginTitle, "ShortcutSuccess", client, g_ExtraRounds[i].er_display_string);
 					b_VoteResult = true;

@@ -107,6 +107,19 @@ void function_Sifirla(int iptal = 0, int handle = 0){
 	if(t_round_timer)t_round_timer = null;
 	if (t_vote_timer)t_vote_timer = null;
 	i_result_enumIndex = -1;
+	if(g_mapCmd.Length > 0){
+		for (int i = 0; i < g_mapCmd.Length; i++){
+			char sI[11],
+				sConvarName[48],
+				sConvarValue[48];
+			IntToString(i, sI, 11);
+			Handle trie = GetArrayCell(g_mapCmd, i);
+			GetTrieString(trie, "ConvarName", sConvarName, 48);
+			GetTrieString(trie, "ConvarValue", sConvarValue, 48);
+			FindConVar(sConvarName).SetString(sConvarValue);
+		}
+		g_mapCmd.Clear();
+	}	
 	FindConVar("sv_gravity").SetInt(800);
 	if(handle == 0){
 		for (int i = 1; i <= MaxClients; i++){
