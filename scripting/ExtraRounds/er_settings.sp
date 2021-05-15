@@ -58,7 +58,9 @@ void SetSettings(){
 		Kv.GetString("hp", buffer, 32, "0");
 		g_ExtraRounds[i].er_hp = StringToInt(buffer);
 		Kv.GetString("shortcut", g_ExtraRounds[i].er_shortcut, 32, "Undefined");
-		Kv.GetString("extra_item", g_ExtraRounds[i].er_extraItem, 32, "Undefined");
+		Kv.GetString("extra_item", buffer, 32, "Undefined");
+		if (StrContains(buffer, "weapon_") == -1)
+			Format(g_ExtraRounds[i].er_extraItem, 32, "weapon_%s", buffer);
 		Kv.GetString("enable", buffer, 32, "0");
 		g_ExtraRounds[i].er_enable = StringToInt(buffer);
 		Kv.GetString("no_zoom", buffer, 32, "0");
