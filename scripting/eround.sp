@@ -15,23 +15,25 @@
 #pragma newdecls required
 
 enum struct enum_ExtraRounds {
-	char er_display_string[48];
 	int er_round_time;
-	char er_weapon[32];
 	int er_only_hs;
-	char er_hud_msg[512];
 	int er_knife_dmg;
 	int er_armor;
 	int er_hp;
 	int er_enable;
-	char er_shortcut[32];
 	int er_index;
 	int er_no_zoom;
 	int er_gravity;
-	float er_speed;
-	char er_extraItem[32];
 	int er_no_recoil;
+	int er_one_tap;
+	int er_one_ammo;
 	char er_cmd[512];
+	char er_extraItem[32];
+	char er_shortcut[32];
+	char er_hud_msg[512];
+	char er_weapon[32];
+	char er_display_string[48];
+	float er_speed;
 }
 
 char g_sPluginTitle[64],
@@ -59,7 +61,6 @@ bool b_SendVote,
 
 ConVar g_cvPredictionConVars[9] = {null, ...};
 ArrayList g_mapCmd;
-
 enum_ExtraRounds g_ExtraRounds[48];
 
 #include "ExtraRounds/er_settings.sp"
@@ -114,7 +115,7 @@ public void OnPluginEnd(){
 	SetConVarInt(g_cvPredictionConVars[3], 8, true, false);
 	SetConVarInt(g_cvPredictionConVars[4], 18, true, false);
 	SetConVarInt(g_cvPredictionConVars[5], 2, true, false);
-	SetConVarInt(g_cvPredictionConVars[6], 4, true, false);	
+	SetConVarInt(g_cvPredictionConVars[6], 4, true, false);
 }
 public void OnClientPutInServer(int client){
 	SDKHook(client, SDKHook_WeaponCanUse, OnWeaponCanUse);

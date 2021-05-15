@@ -1,6 +1,6 @@
 void SetSettings(){
-	static char buffer[256];
-	static char sPath[PLATFORM_MAX_PATH];
+	char buffer[256];
+	char sPath[PLATFORM_MAX_PATH];
 	KeyValues Kv = new KeyValues("Extra_Rounds");
 	BuildPath(Path_SM, sPath, sizeof(sPath), "configs/ExtraRounds/settings.ini");
 	if(!Kv.ImportFromFile(sPath))
@@ -69,8 +69,12 @@ void SetSettings(){
 		g_ExtraRounds[i].er_no_recoil = StringToInt(buffer);		
 		Kv.GetString("player_speed", buffer, 32, "1");
 		g_ExtraRounds[i].er_speed = StringToFloat(buffer);
-		g_ExtraRounds[i].er_index = i;
+		Kv.GetString("one_tap", buffer, 32, "0");
+		g_ExtraRounds[i].er_one_tap = StringToInt(buffer);		
+		Kv.GetString("one_ammo", buffer, 32, "0");
+		g_ExtraRounds[i].er_one_ammo = StringToInt(buffer);			
 		Kv.GetString("cmd", g_ExtraRounds[i].er_cmd, sizeof(g_ExtraRounds[].er_cmd), "Undefined");
+		g_ExtraRounds[i].er_index = i;
 		if (StrEqual(g_ExtraRounds[i].er_display_string, "Undefined") || StrEqual(g_ExtraRounds[i].er_weapon, "Undefined") || g_ExtraRounds[i].er_enable == 0){
 			continue;
 		}

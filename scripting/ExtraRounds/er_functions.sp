@@ -37,6 +37,10 @@ public Action TMR_uyari(Handle timer){
 		}
 	}	
 }
+public Action TMR_DoRound(Handle timer, int client){
+	if(check_status(client))
+		DoRound(client);
+}
 ///////
 void func_SendVote(){
 	ArrayList sended_index = CreateArray();
@@ -78,6 +82,10 @@ void DoRound(int client){
 	if (!b_OnExtraRound || i_result_enumIndex == -1)return;
 	StripAllWeapons(client);
 	if (GivePlayerItem(client, g_ExtraRounds[i_result_enumIndex].er_weapon) != -1){
+		if(g_ExtraRounds[i_result_enumIndex].er_one_ammo > 0){
+			int weaponI =  GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon");	
+			SetZeroAmmo(client, weaponI);
+		}		
 		if (!(StrEqual(g_ExtraRounds[i_result_enumIndex].er_weapon, "weapon_knife"))){
 			GivePlayerItem(client, "weapon_knife");
 		}
@@ -92,7 +100,7 @@ void DoRound(int client){
 		}
 		if(g_ExtraRounds[i_result_enumIndex].er_speed != 1){
 			SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", g_ExtraRounds[i_result_enumIndex].er_speed);
-		}		
+		}
 	}else{
 		CPrintToChat(client, "{darkred}%s %t", g_sPluginTitle, "GivePlayerItemError", g_ExtraRounds[i_result_enumIndex].er_weapon);
 	}
@@ -156,6 +164,16 @@ stock void StripAllWeapons(int client)
             AcceptEntityInput(iEnt, "Kill");
 		}
     }
+}
+stock Action SetZeroAmmo(int client, int weapon){
+	if (IsValidEntity(weapon)) {
+		SetEntProp(weapon, Prop_Send, "m_iPrimaryReserveAmmoCount", 0); //set reserve to 0
+		int ammotype = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType");
+		if(ammotype == -1) return;
+		SetEntProp(client, Prop_Send, "m_iAmmo", 0, _, ammotype);
+		SetEntProp(weapon, Prop_Send, "m_iClip1", 1);
+		SetEntProp(weapon, Prop_Send, "m_iClip2", 0);		
+	}
 }
 public Action SetFullAmmo(int client, int weapon){
 	SetEntProp(weapon, Prop_Send, "m_iPrimaryReserveAmmoCount", 999); //set reserve to 999
@@ -230,10 +248,18 @@ char[] GetRoundInfo(int index){
 		Format(buf, 512, "%s\n"...
 		"Silah Sekmeme: Aktif", buf);
 	}
+	if (g_ExtraRounds[index].er_one_tap != 0){
+		Format(buf, 512, "%s\n"...
+		"One Tap: Aktif", buf);
+	}
+	if (g_ExtraRounds[index].er_one_ammo != 0){
+		Format(buf, 512, "%s\n"...
+		"Tek Mermi: Aktif", buf);
+	}
 	if (!StrEqual(g_ExtraRounds[index].er_cmd, "Undefined")){
 		Format(buf, 512, "%s\n"...
 		"Server Komut: Mevcut", buf);
-	}	
+	}
 	(g_ExtraRounds[index].er_enable == 1) ? Format(buf, 512, "%s\nRound Durumu: Aktif", buf) : Format(buf, 512, "%s\nRound Durumu: Deaktif", buf);
 	return buf;
 }

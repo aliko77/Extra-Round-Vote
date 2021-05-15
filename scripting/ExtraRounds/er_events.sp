@@ -2,6 +2,7 @@ void HookEvents(){
 	HookEvent("round_end", Event_RoundEnd, EventHookMode_Pre);
 	HookEvent("round_start", Event_RoundStart, EventHookMode_Pre);
 	HookEvent("player_spawn", Event_PlayerSpawn, EventHookMode_Pre);
+	HookEvent("player_death", Event_PlayerDeath, EventHookMode_Pre);
 	HookEventEx("weapon_fire", Event_WeaponFire, EventHookMode_Pre);
 }
 public Action CS_OnCSWeaponDrop(int client, int weaponindex)
@@ -19,8 +20,10 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 			return Plugin_Continue;
 		}
 		if(buttons & IN_RELOAD){
-			int weaponI =  GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon");	
-			SetFullAmmo(client, weaponI);
+			if(i_result_enumIndex != -1 && b_OnExtraRound && g_ExtraRounds[i_result_enumIndex].er_one_ammo < 1){
+				int weaponI =  GetEntPropEnt(client, Prop_Data, "m_hActiveWeapon");	
+				SetFullAmmo(client, weaponI);
+			}
 		}
 	}
 	return Plugin_Continue;
@@ -86,7 +89,7 @@ void Event_RoundStart(Event event, const char[] name, bool dontBroadcast){
 void Event_PlayerSpawn(Handle event, const char[] name, bool dontBroadcast){
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if(b_OnExtraRound && i_result_enumIndex != -1 && client != -1){
-		DoRound(client);
+		CreateTimer(0.3, TMR_DoRound, client, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
 void Event_WeaponFire(Handle event, const char[] name, bool dontBroadcast){
@@ -104,9 +107,26 @@ void Event_WeaponFire(Handle event, const char[] name, bool dontBroadcast){
 	  	else if (StrContains(weaponname, "taser") != -1)SetEntProp(activeweapon, Prop_Send, "m_iPrimaryReserveAmmoCount", 1);
 	}
 }
+public void Event_PlayerDeath(Event hEvent, const char[] sEvName, bool bDontBroadcast){
+	if(b_OnExtraRound && i_result_enumIndex != -1){
+		if (g_ExtraRounds[i_result_enumIndex].er_one_ammo > 0){
+			int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+			int olen = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+			if (IsClientInGame(attacker) && !IsFakeClient(attacker) && IsClientInGame(olen) && !IsFakeClient(olen)){
+				char WeaponName[128];
+				GetClientWeapon(attacker, WeaponName, sizeof(WeaponName));
+				StripAllWeapons(attacker);
+				GivePlayerItem(attacker, g_ExtraRounds[i_result_enumIndex].er_weapon);
+				int weaponI =  GetEntPropEnt(attacker, Prop_Data, "m_hActiveWeapon");
+				SetZeroAmmo(attacker, weaponI);
+				GivePlayerItem(attacker, "weapon_knife");
+			}
+		}	
+	}		
+}
 public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &damage, int &damagetype, int &weapon, float damageForce[3], float damagePosition[3], int damagecustom){
 	if(b_OnExtraRound && i_result_enumIndex != -1){
-		if(g_ExtraRounds[i_result_enumIndex].er_knife_dmg < 1){
+		if(g_ExtraRounds[i_result_enumIndex].er_knife_dmg < 1 && g_ExtraRounds[i_result_enumIndex].er_one_ammo < 1){
 			if(victim > 0 && victim <= MaxClients && attacker > 0 && attacker <= MaxClients && IsClientInGame(victim) && IsClientInGame(attacker)){
 				char WeaponName[128];
 				GetClientWeapon(attacker, WeaponName, sizeof(WeaponName));
@@ -129,6 +149,16 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
 				}
 			}
 		}
+		if (g_ExtraRounds[i_result_enumIndex].er_one_tap > 0){
+			if(victim > 0 && victim <= MaxClients && attacker > 0 && attacker <= MaxClients && IsClientInGame(victim) && IsClientInGame(attacker)){
+				char WeaponName[256];
+				GetClientWeapon(attacker, WeaponName, sizeof(WeaponName));
+				if (StrEqual(WeaponName, g_ExtraRounds[i_result_enumIndex].er_weapon)){
+					damage = 999.0;
+					return Plugin_Changed;
+				}
+			}
+		}
 	}
 	return Plugin_Continue;
 }
@@ -140,6 +170,9 @@ public Action OnWeaponCanUse(int client, int weapon){
 			return Plugin_Continue;
 		}
 		else {
+			if (StrEqual(g_ExtraRounds[i_result_enumIndex].er_weapon, "weapon_usp_silencer") && StrEqual(classname, "weapon_hkp2000")){
+				return Plugin_Continue;
+			}
 			return Plugin_Handled;
 		}		
 	}
